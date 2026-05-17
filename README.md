@@ -1,12 +1,5 @@
-```python
-# Writing the complete README.md file content and saving it to disk
-readme_content = """# F-JEPA Split-Inference Super-Resolution for Edge AI
 
-A high-performance, bandwidth-optimized Split-Inference Super-Resolution system deployed on edge hardware. This project implements a **Frequency Joint-Embedding Predictive Architecture (F-JEPA)** to split an image processing pipeline across an edge device (Sender) and a cloud platform (Receiver).
 
-By isolating low-frequency global patterns from high-frequency structural textures in the Fourier domain, the system achieves over a **1000x reduction in network data payloads** while preserving sub-pixel details during reconstructed upscaling.
-
----
 
 ## 🏗️ Architectural Concept
 
@@ -30,8 +23,6 @@ my_jepa_project/
 └── README.md              # Project documentation and execution guide
 
 ```
-
----
 
 ## ⚡ Hardware & Software Requirements
 
