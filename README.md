@@ -1,4 +1,4 @@
-
+![img](final_reconstruction.png)
 ---
 
 # Super-Resolution with JEPA 🔍
@@ -12,6 +12,8 @@ The pipeline operates in the frequency domain using Fast Fourier Transform (FFT)
 * **Phase 1 (Representation Learning):** Uses a `JEPAEncoder` and `JEPAPredictor` to learn meaningful mappings from low-frequency contexts to high-frequency targets without decoding back to pixel space.
 * **Phase 2 (Super-Resolution Decoding):** A `JEPADecoder` takes the frozen latent representations learned in Phase 1 and reconstructs the final high-resolution image.
 
+![v3 mobile net](https://pytorch.org/wp-content/uploads/2024/11/mobilenet-v3-block.png)
+
 ## 📊 Hardware & Performance Metrics
 
 This model is optimized for efficient training and real-time inference, utilizing real-world urban and traffic data.
@@ -21,10 +23,12 @@ This model is optimized for efficient training and real-time inference, utilizin
 * **Hardware:** NVIDIA GeForce RTX 3050 (8GB VRAM)
 * **Training Time:** ~1 hour per 5 epochs
 * **Dataset Size:** ~61,000 training frames
-* **Data Sources:** * Traffic camera footage provided by the Split Inference Team (SI Team).
-* Urban Tracker dataset.
-* Supplementary high-resolution images sourced from the internet.
+* **Data Sources:** 
+    * Traffic camera footage provided by the Split Inference Team (SI Team).
+    * Urban Tracker dataset.
+    * Supplementary high-resolution images sourced from the internet.
 
+![frame](data/frameQA.png)
 
 
 **⚡ Inference Speeds (RTX 3050):**
