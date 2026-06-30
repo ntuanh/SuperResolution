@@ -34,3 +34,19 @@ LATENT_DIM = 256
 PREDICTOR_HIDDEN_DIM = 512
 USE_PRETRAINED_BACKBONE = False
 ARCHITECTURE_VERSION = "mobilenet_2ch_phase2_v1"
+
+# =====================================================================
+# Spatial super-resolution pipeline (sr.py / JEPA_SR.ipynb)
+# Predicts a high-res image from a low-res image (genuine upscaling),
+# independent from the frequency pipeline above.
+# =====================================================================
+SR_SCALE = 4                       # LR is HR // SR_SCALE (256 -> 64 -> 256)
+SR_CHANNELS = 3                    # 3 = RGB super-resolution, 1 = grayscale
+SR_EPOCHS = 10                     # passes over the training video per run
+SR_BATCH_SIZE = 8
+SR_LEARNING_RATE = 2e-4
+SR_MAX_STEPS_PER_EPOCH = None      # set to an int for quick tests, e.g. 50
+SR_PRETRAINED = False              # True uses ImageNet-pretrained MobileNet stem (RGB only)
+SR_CHECKPOINT_PATH = "jepa_sr.pth"
+SR_OUTPUT_PATH = "sr_reconstruction.png"
+SR_ARCHITECTURE_VERSION = "jepa_sr_rgb_x4_v1"

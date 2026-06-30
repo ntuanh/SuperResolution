@@ -42,7 +42,7 @@ ARCHITECTURE_VERSION = config.ARCHITECTURE_VERSION
 
 
 class JEPAEncoder(nn.Module):
-    def __init__(self, latent_dim=LATENT_DIM, pretrained=False):
+    def __init__(self, latent_dim=LATENT_DIM, pretrained=False, in_channels=2):
         super().__init__()
 
         weights = None
@@ -56,18 +56,21 @@ class JEPAEncoder(nn.Module):
         backbone = tv_models.mobilenet_v3_small(weights=weights)
 
         # ==========================================
-        # CHANGE INPUT CHANNELS: 3 -> 2
+        # CHANGE INPUT CHANNELS (default 2 = FFT real+imag).
+        # When in_channels == 3 we keep MobileNet's original 3-channel stem so
+        # pretrained weights stay valid (RGB super-resolution).
         # ==========================================
-        orig_conv = backbone.features[0][0]
+        if in_channels != 3:
+            orig_conv = backbone.features[0][0]
 
-        backbone.features[0][0] = nn.Conv2d(
-            in_channels=2,
-            out_channels=orig_conv.out_channels,
-            kernel_size=orig_conv.kernel_size,
-            stride=orig_conv.stride,
-            padding=orig_conv.padding,
-            bias=False,
-        )
+            backbone.features[0][0] = nn.Conv2d(
+                in_channels=in_channels,
+                out_channels=orig_conv.out_channels,
+                kernel_size=orig_conv.kernel_size,
+                stride=orig_conv.stride,
+                padding=orig_conv.padding,
+                bias=False,
+            )
 
         # ==========================================
         # REMOVE CLASSIFIER HEAD
@@ -133,7 +136,7 @@ class JEPAPredictor(nn.Module):
 # =========================================================
 
 class JEPADecoder(nn.Module):
-    def __init__(self, latent_dim=LATENT_DIM, target_hw=(256, 256)):
+    def __init__(self, latent_dim=LATENT_DIM, target_hw=(256, 256), out_channels=2):
         super().__init__()
 
         self.decoder = nn.Sequential(
@@ -178,9 +181,10 @@ class JEPADecoder(nn.Module):
             # 128 -> 256
             nn.Upsample(scale_factor=2, mode='bilinear', align_corners=False),
 
-            # OUTPUT FFT:
-            # 2 channels = real + imag
-            nn.Conv2d(16, 2, 3, padding=1),
+            # OUTPUT:
+            # out_channels=2 -> FFT real + imag (frequency pipeline)
+            # out_channels=3 -> RGB residual (super-resolution pipeline)
+            nn.Conv2d(16, out_channels, 3, padding=1),
         )
 
     def forward(self, s_x, s_y_pred):
