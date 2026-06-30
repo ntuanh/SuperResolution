@@ -12,18 +12,22 @@ PHASE1_CHECKPOINT_CANDIDATES = [
 ]
 
 # Every Run All adds this many more phase-1 epochs before phase 2.
-PHASE1_ADDITIONAL_EPOCHS = 1
+PHASE1_ADDITIONAL_EPOCHS = 5
 PHASE1_LEARNING_RATE = 1e-4
 PHASE1_WEIGHT_DECAY = 1e-4
 PHASE1_EMA_DECAY = 0.996
 PHASE1_MAX_STEPS_PER_EPOCH = None  # set to an int for quick tests, e.g. 20
 
 # Every Run All adds this many more phase-2 epochs.
-ADDITIONAL_EPOCHS = 0
+ADDITIONAL_EPOCHS = 10
 BATCH_SIZE = 16
 MAX_STEPS_PER_EPOCH = None  # set to an int for quick tests, e.g. 20
 SAVE_EVERY_STEPS = 100
 LEARNING_RATE = 1e-3
+# Phase-2 loss = image-space L1 + PHASE2_FREQ_LOSS_WEIGHT * frequency-domain L1.
+PHASE2_FREQ_LOSS_WEIGHT = 0.1
+# Max gradient norm for clipping in both phases (set None to disable).
+GRAD_CLIP_NORM = 1.0
 TARGET_HW = (256, 256)
 RADIUS_RATIO = 0.25
 LATENT_DIM = 256
