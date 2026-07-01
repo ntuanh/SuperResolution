@@ -73,6 +73,23 @@ end-to-end training is simpler and stronger.
 > by the *same* scalar mean/std. That cancels algebraically to a plain (rescaled)
 > L1 — a no-op — and has been removed. See the changelog below.
 
+### Training loss curves (Pipeline A)
+
+Recorded from the actual training checkpoints (`phase1_jepa.pth`,
+`frequency_jepa_sr.pth`):
+
+![Training loss curves](report/images/loss_curves.png)
+
+* **Phase 1 — Representation learning (left, log scale).** The latent **MSE**
+  against the EMA target drops ~2.9×10⁻² → 6×10⁻⁵ over 7 epochs (634 steps),
+  confirming the predictor learns to match the target latents without collapse.
+* **Phase 2 — Decoder reconstruction (right).** The **image-space L1 + 0.1×
+  frequency L1** falls ~0.666 → 0.542 over 25 epochs (16,785 steps); the few
+  transient spikes coincide with training-resume boundaries.
+
+> Regenerate any time from the checkpoint with `sr.plot_history()` (Pipeline B)
+> or from the figure script used above (Pipeline A).
+
 ---
 
 ## 🛠️ Changelog (what was fixed & added)
